@@ -22,7 +22,7 @@ def _init_models():
     InteractionSearchParameters = create_model(
         "InteractionSearchParameters",
         subject_taxon=(str, Field(description="The taxonomic group that will be interacting with other groups")),
-        interaction_type=(Optional[InteractionTypes], Field(None, description="The query will match other taxonomic groups that have this type of interaction with the subject taxon"))
+        interaction_type=(Optional[InteractionTypes], Field(None, description="The query will match other taxonomic groups that have this type of interaction with the subject taxon. Leave this field unset to match all interaction types."))
     )
 
 _init_models()
