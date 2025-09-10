@@ -25,14 +25,12 @@ class GlobiAgent(IChatBioAgent):
             name="GloBI (Global Biotic Interactions)",
             description="Finds recorded interactions between organisms of different taxonomic groups.",
             icon="https://raw.githubusercontent.com/globalbioticinteractions/logo/refs/heads/main/globi_256x256.png",
-            url="http://localhost:9999",
             entrypoints=[
                 AgentEntrypoint(
                     id="find_interactions",
                     description="Generates a list of taxonomic groups that have a certain type of interaction with a"
                                 " taxonomic group of interest. For example, this entrypoint can list organisms that"
-                                " prey on Rattus rattus.",
-                    parameters=None
+                                " prey on Rattus rattus."
                 )
             ]
         )
@@ -43,7 +41,7 @@ class GlobiAgent(IChatBioAgent):
             process: IChatBioAgentProcess
 
             async with httpx.AsyncClient() as client:
-                await process.log("Generating search parameters for the iDigBio's media records API")
+                await process.log("Generating search parameters for GloBI's taxon API")
                 p = await _get_interactions_api_parameters(request)
                 await process.log(f"Generated search parameters", data=p.model_dump(mode="json"))
 
@@ -77,7 +75,7 @@ async def _get_interactions_api_parameters(request: str) -> InteractionSearchPar
     try:
         client: AsyncInstructor = from_openai(AsyncOpenAI())
         result = await client.chat.completions.create(
-            model="gpt-4.1-unfiltered",
+            model="gpt-5-unfiltered",
             temperature=0,
             response_model=InteractionSearchParameters,
             messages=[
