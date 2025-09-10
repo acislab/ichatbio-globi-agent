@@ -13,7 +13,7 @@ def test_invalid_interaction_type():
 
 def test_list_interaction_types():
     interaction_types = [t.value for t in InteractionTypes]
-    known_types = {"eats", "eatenBy", "preysOn"}
+    known_types = {"eats", "eatenBy", "preysOn", "ecologicallyRelatedTo"}
     assert set(interaction_types) & known_types == known_types
 
 def test_interaction_search_parameters():

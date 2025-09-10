@@ -16,7 +16,7 @@ def all_traffic_except_llm(request):
 
 @pytest.mark.asyncio
 @pytest.mark.httpx_mock(should_mock=all_traffic_except_llm)
-async def test_globi_agent(context, messages, httpx_mock):
+async def test_find_interactions_of_type(context, messages, httpx_mock):
     mock_csv_data = importlib.resources.files("resources").joinpath("naja_naja_eaten_by.csv").read_text()
     mock_json_data = csv_to_json(mock_csv_data)
     httpx_mock.add_response(url="https://api.globalbioticinteractions.org/taxon/Naja naja/eatenBy?type=csv",
@@ -39,3 +39,15 @@ async def test_globi_agent(context, messages, httpx_mock):
                              'source': 'GloBI'
                          })
     ]
+
+@pytest.mark.asyncio
+@pytest.mark.httpx_mock(should_mock=all_traffic_except_llm)
+async def test_find_all_interactions(context, messages, httpx_mock):
+    httpx_mock.add_response() # Don't query GloBI, just return an empty response
+
+    await GlobiAgent().run(context, "What interacts with Naja naja?", "find_interactions", None)
+
+    assert messages[2] == ProcessLogResponse(
+        text='Generated search parameters',
+        data={'subject_taxon': 'Naja naja', 'interaction_type': 'ecologicallyRelatedTo'}
+    )

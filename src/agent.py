@@ -14,7 +14,8 @@ from pydantic import BaseModel
 from starlette.applications import Starlette
 
 from schema import InteractionSearchParameters
-from src.util import csv_to_json
+from src.schema import InteractionTypes
+from util import csv_to_json
 
 dotenv.load_dotenv()
 
@@ -88,6 +89,9 @@ async def _get_interactions_api_parameters(request: str) -> InteractionSearchPar
         )
     except InstructorRetryException as e:
         raise ValueError("Failed to generate valid search parameters") from e
+
+    if result.interaction_type is None:
+        result.interaction_type = InteractionTypes("ecologicallyRelatedTo")
 
     return result
 
