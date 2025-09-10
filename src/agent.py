@@ -13,8 +13,7 @@ from openai import AsyncOpenAI
 from pydantic import BaseModel
 from starlette.applications import Starlette
 
-from schema import InteractionSearchParameters
-from src.schema import InteractionTypes
+from schema import InteractionSearchParameters, InteractionTypes
 from util import csv_to_json
 
 dotenv.load_dotenv()
