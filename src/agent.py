@@ -19,10 +19,6 @@ from src.util import csv_to_json
 dotenv.load_dotenv()
 
 class GlobiAgent(IChatBioAgent):
-    """
-    A simple example agent with a single entrypoint.
-    """
-
     @override
     def get_agent_card(self) -> AgentCard:
         return AgentCard(
