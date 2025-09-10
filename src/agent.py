@@ -1,18 +1,20 @@
+import json
 from typing import override, Optional
 
 import dotenv
 import httpx
-from instructor.core.retry import InstructorRetryException
-from openai import AsyncOpenAI
-from instructor import from_openai, AsyncInstructor
 from ichatbio.agent import IChatBioAgent
 from ichatbio.agent_response import ResponseContext, IChatBioAgentProcess
 from ichatbio.server import build_agent_app
 from ichatbio.types import AgentCard, AgentEntrypoint
+from instructor import from_openai, AsyncInstructor
+from instructor.core.retry import InstructorRetryException
+from openai import AsyncOpenAI
 from pydantic import BaseModel
 from starlette.applications import Starlette
 
 from schema import InteractionSearchParameters
+from src.util import csv_to_json
 
 dotenv.load_dotenv()
 
@@ -45,18 +47,28 @@ class GlobiAgent(IChatBioAgent):
             process: IChatBioAgentProcess
 
             async with httpx.AsyncClient() as client:
+                await process.log("Generating search parameters for the iDigBio's media records API")
                 p = await _get_interactions_api_parameters(request)
-                api_query_url = f"https://api.globalbioticinteractions.org/taxon/{p.subject_taxon}/{p.interaction_type.value}"
-                response = await client.get(api_query_url)
-                result = response.json()
+                await process.log(f"Generated search parameters", data=p.model_dump(mode="json"))
 
-                subject_taxon, relation, object_taxa = result['data'][0]
+                csv_api_query_url = f"https://api.globalbioticinteractions.org/taxon/{p.subject_taxon}/{p.interaction_type.value}?type=csv"
+                await process.log(f"Sending a GET request to the GloBI API at {csv_api_query_url}")
+                response = await client.get(csv_api_query_url)
+                csv_interactions = response.text
+
+            interactions = csv_to_json(csv_interactions)
+            num_interactions = len(interactions)
+            num_interaction_types = len({entry.get("interaction_type") for entry in interactions})
+            await process.log(f"Found {num_interactions} distinct interaction(s) across {num_interaction_types} interaction type(s)")
 
             await process.create_artifact(
                 mimetype="application/json",
-                description=f"List of taxa that \"{subject_taxon}\" \"{relation}\"",
-                uris=[api_query_url],
-                metadata={"source": "GloBI"}
+                description=f"List of taxa that \"{p.subject_taxon}\" relates to as \"{p.interaction_type.value}\" or similar",
+                content=json.dumps(interactions).encode(),
+                metadata={
+                    "derived_from": csv_api_query_url,
+                    "source": "GloBI"
+                }
             )
 
 

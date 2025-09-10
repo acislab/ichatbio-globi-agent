@@ -1,0 +1,5 @@
+"source_taxon_name","interaction_type","target_taxon_name"
+"Naja naja","eatenBy","Naja naja"
+"Naja naja","hasEndoparasite","Bothridium pythonis"
+"Naja naja","hasEndoparasite","Hexametra quadricornis"
+"Naja naja","preyedUponBy","Ophiophagus kaalinga"

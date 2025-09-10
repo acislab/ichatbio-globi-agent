@@ -8,16 +8,16 @@ from pydantic import Field
 InteractionTypes: Type[Enum]
 InteractionSearchParameters: Type[BaseModel]
 
-def get_interaction_types() -> Type[Enum]:
+def _get_interaction_types() -> Type[Enum]:
     with httpx.Client() as client:
         response = client.get("https://api.globalbioticinteractions.org/interactionTypes")
         interaction_types = list(response.json())
         as_enum = Enum("InteractionType", {t: t for t in interaction_types})
         return as_enum
 
-def init_models():
+def _init_models():
     global InteractionTypes, InteractionSearchParameters
-    InteractionTypes = get_interaction_types()
+    InteractionTypes = _get_interaction_types()
 
     InteractionSearchParameters = create_model(
         "InteractionSearchParameters",
@@ -25,4 +25,4 @@ def init_models():
         interaction_type=(InteractionTypes, Field(description="The query will match other taxonomic groups that have this type of interaction with the subject taxon"))
     )
 
-init_models()
+_init_models()

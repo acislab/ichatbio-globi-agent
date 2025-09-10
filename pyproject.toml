@@ -10,7 +10,8 @@ dependencies = [
     "dotenv~=0.9.9",
     "pytest~=8.3.5",
     "pytest-asyncio~=1.0.0a1",
-    "uvicorn~=0.34.3"
+    "uvicorn~=0.34.3",
+    "pytest_httpx~=0.35.0"
 ]
 
 [tool.pytest.ini_options]
