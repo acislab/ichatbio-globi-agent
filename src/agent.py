@@ -75,7 +75,7 @@ async def _get_interactions_api_parameters(request: str) -> InteractionSearchPar
     try:
         client: AsyncInstructor = from_openai(AsyncOpenAI())
         result = await client.chat.completions.create(
-            model="gpt-5-unfiltered",
+            model="gpt-4.1-unfiltered",
             temperature=0,
             response_model=InteractionSearchParameters,
             messages=[
