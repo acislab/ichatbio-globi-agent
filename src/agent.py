@@ -67,7 +67,7 @@ class GlobiAgent(IChatBioAgent):
 
 
 SEARCH_PARAMETER_GENERATION_PROMPT = """\
-Your task is to turn user requests into search parameters for use with Global Biotic Interactions' interactions search
+Your task is to turn user requests into search parameters for use with the Global Biotic Interactions (GloBI) search
 API.
 """
 
@@ -88,7 +88,7 @@ async def _get_interactions_api_parameters(request: str) -> InteractionSearchPar
         raise ValueError("Failed to generate valid search parameters") from e
 
     if result.interaction_type is None:
-        result.interaction_type = InteractionTypes("ecologicallyRelatedTo")
+        result.interaction_type = InteractionTypes("interactsWith")
 
     return result
 

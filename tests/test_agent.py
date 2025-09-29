@@ -49,5 +49,5 @@ async def test_find_all_interactions(context, messages, httpx_mock):
 
     assert messages[2] == ProcessLogResponse(
         text='Generated search parameters',
-        data={'subject_taxon': 'Naja naja', 'interaction_type': 'ecologicallyRelatedTo'}
+        data={'subject_taxon': 'Naja naja', 'interaction_type': 'interactsWith'}
     )
