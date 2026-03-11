@@ -1,6 +1,6 @@
 # ichatbio-globi-agent
 
-A template for making new iChatBio agents.
+An agent that interacts with the [globalbioticinteractions.org](https://www.globalbioticinteractions.org/) API.
 
 ## Quickstart
 
@@ -9,15 +9,15 @@ A template for making new iChatBio agents.
 Set up your development environment:
 
 ```bash
-python -m venv .venv
+pip3 install uv
+uv sync
 source .venv/bin/activate
-pip install .
 ```
 
 Run the server:
 
 ```bash
-uvicorn --app-dir src agent:create_app --factory --reload
+uvicorn --app-dir src agent:create_app --factory --reload --host "0.0.0.0" --port 9999
 ```
 
 You can also run the agent server as a Docker container:

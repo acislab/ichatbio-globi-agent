@@ -26,7 +26,7 @@ async def test_find_interactions_of_type(context, messages, httpx_mock):
 
     assert messages == [
         ProcessBeginResponse(summary='Searching GloBI'),
-        ProcessLogResponse(text="Generating search parameters for the iDigBio's media records API"),
+        ProcessLogResponse(text="Generating search parameters for GloBI's taxon API"),
         ProcessLogResponse(text='Generated search parameters',
                            data={'subject_taxon': 'Naja naja', 'interaction_type': 'eatenBy'}),
         ProcessLogResponse(text='Sending a GET request to the GloBI API at https://api.globalbioticinteractions.org/taxon/Naja naja/eatenBy?type=csv'),

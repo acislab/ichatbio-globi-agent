@@ -24,7 +24,8 @@ class GlobiAgent(IChatBioAgent):
         return AgentCard(
             name="GloBI (Global Biotic Interactions)",
             description="Finds recorded interactions between organisms of different taxonomic groups.",
-            icon="https://raw.githubusercontent.com/globalbioticinteractions/logo/refs/heads/main/globi_256x256.png",
+            icon="https://raw.githubusercontent.com/globalbioticinteractions/logo/refs/heads/main/globi.svg",
+            documentation_url="https://github.com/acislab/ichatbio-globi-agent",
             entrypoints=[
                 AgentEntrypoint(
                     id="find_interactions",
